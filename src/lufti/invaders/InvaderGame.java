@@ -1,5 +1,6 @@
 package lufti.invaders;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,55 +21,62 @@ import lufti.ui.Canvas;
 public class InvaderGame extends AbstractGame {
 
 	private SpriteSheet sprites;
-	private int x, y;
-	private ArrayList<Point> bullets = new ArrayList<>();
+	private Ship ship;
+	private ArrayList<Bullet> bullets = new ArrayList<>();
+
+	private int gameHeight, gameWidth;
 
 	public InvaderGame() throws IOException {
 		sprites = SpriteSheetFactory.getClassic();
-		x = 50;
-		y = 500;
+		ship = new Ship(400, 500);
+		gameHeight = 600;
+		gameWidth = 800;
+	}
+
+	public int getRightGameBorder() {
+		return gameWidth - 100;
+	}
+
+	public int getLeftGameBorder() {
+		return 100;
+	}
+
+	public int getTopGameBorder() {
+		return 0;
+	}
+
+	public int getBottomGameBorder() {
+		return gameHeight;
 	}
 
 	@Override
 	public void update(PlayerInput input) {
-		if (input.containsCommand(Command.RIGHT)) {
-			x += 8;
-			if (x > 750) {
-				x = 750;
-			}
-		}
-		if (input.containsCommand(Command.LEFT)) {
-			x -= 8;
-			if (x < 50) {
-				x = 50;
-			}
-		}
+		ship.update(input, this);
+		
+		
 
-		int projHeight = sprites.getSpriteDimension("ProjectileA", 0).height;
-		if (input.containsCommand(Command.SHOOT)) {
-			bullets.add(new Point(x - 2, y - projHeight));
-		}
-
-		ArrayList<Point> keep = new ArrayList<>();
-		for (Point point : bullets) {
-			point.y -= 8;
-			if (point.y > -50) {
-				keep.add(point);
+		ArrayList<Bullet> keep = new ArrayList<>();
+		for (Bullet bullet : bullets) {
+			bullet.y -= 8;
+			if (bullet.y > getTopGameBorder()-50) {
+				keep.add(bullet);
 			}
 		}
+		
 		bullets = keep;
 	}
 
 	@Override
 	public void render(Canvas.CanvasPainter pntr) {
-		BufferedImage ship = sprites.getSprite("Ship", 0);
-		int width = sprites.getSpriteDimension("Ship", 0).width;
-		pntr.drawImage(ship, x - width / 2, y);
-
-		BufferedImage proj = sprites.getSprite("ProjectileA", 0);
-		for (Point point : bullets) {
-			pntr.drawImage(proj, point.x, point.y);
+		ship.render(pntr, sprites);
+		
+		for (Bullet bullet : bullets) {
+			bullet.render(pntr, sprites);
 		}
+	}
+
+	public void createBullet(int x, int y) {
+		bullets.add(new Bullet(x,y));
 	}
 
 }
