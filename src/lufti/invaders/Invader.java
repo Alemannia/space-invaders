@@ -34,7 +34,7 @@ public class Invader extends GameObject {
 		}
 		
 		if(Math.random() < shootProb) {
-			game.createBullet(midX(), getBottomSide(), 1, "ProjectileB");
+			game.createBullet(midX(), getBottomSide(), 4, "ProjectileB");
 		}
 	}
 	
