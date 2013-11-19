@@ -19,7 +19,7 @@ public class InvaderGame extends AbstractGame {
 	private Ship ship;
 	private ArrayList<GameObject> gameObjects = new ArrayList<>();
 	private ArrayList<GameObject> newGameObjects = new ArrayList<>();
-	
+
 	private ParticleEmitter particleEmitter = new ParticleEmitter();
 
 	private int gameHeight, gameWidth;
@@ -27,7 +27,7 @@ public class InvaderGame extends AbstractGame {
 	public InvaderGame() throws IOException {
 		sprites = SpriteSheetFactory.getClassic();
 		ship = new Ship(402, 500, sprites);
-		
+
 		gameHeight = 600;
 		gameWidth = 800;
 
@@ -50,16 +50,16 @@ public class InvaderGame extends AbstractGame {
 	public int getBottomGameBorder() {
 		return gameHeight;
 	}
-	
+
 	public ArrayList<GameObject> findCollisions(int x, int y) {
 		ArrayList<GameObject> res = new ArrayList<>();
-		
+
 		for (GameObject object : gameObjects) {
-			if( object.contains(x, y)) {
+			if (object.contains(x, y)) {
 				res.add(object);
 			}
 		}
-		
+
 		return res;
 	}
 
@@ -67,7 +67,7 @@ public class InvaderGame extends AbstractGame {
 	public void update(PlayerInput input) {
 		gameObjects.addAll(newGameObjects);
 		newGameObjects.clear();
-		
+
 		particleEmitter.update(input, this);
 
 		for (GameObject object : gameObjects) {
@@ -90,6 +90,13 @@ public class InvaderGame extends AbstractGame {
 		particleEmitter.createExplosion(x, y, 60, 25);
 	}
 
+	void spawnSmallExplosion(int x, int y, int col) {
+		particleEmitter.setColor(col).setVelocity(5f)
+				.setGravity(.1f).setTTL(200)
+				.setBounce(.25f, .1f);
+		particleEmitter.createExplosion(x, y, 10, 10);
+	}
+
 	@Override
 	public void render(Canvas.CanvasPainter pntr) {
 		for (GameObject object : gameObjects) {
@@ -102,7 +109,7 @@ public class InvaderGame extends AbstractGame {
 	public void createBullet(int x, int y, int speed, String type) {
 		newGameObjects.add(new Bullet(x, y, speed, type));
 	}
-	
+
 	public void addGameObject(GameObject object) {
 		newGameObjects.add(object);
 	}

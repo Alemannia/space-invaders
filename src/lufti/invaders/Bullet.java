@@ -17,7 +17,13 @@ public class Bullet extends GameObject {
 	private boolean dead = false;
 
 	public Bullet(int x, int y, int speed, String type) {
-		super(x, y);
+		super(x, y, 4, 8);
+		
+		// TODO: don't cheat.
+		if(speed > 0) {
+			w = 12;
+		}
+		
 		this.speed = speed;
 		this.type = type;
 	}
@@ -66,6 +72,21 @@ public class Bullet extends GameObject {
 				hitInvader.kill();
 				kill();
 				game.spawnExplosion(hitInvader.midX(), hitInvader.midY(), 0xffffffff);
+				return;
+			}
+			
+			Bullet hitBullet = null;
+			for (GameObject object : collisions) {
+				if(object instanceof Bullet && object != this) {
+					hitBullet = (Bullet) object;
+				}
+			}
+			
+			if (hitBullet != null) {
+				hitBullet.kill();
+				kill();
+				game.spawnExplosion(hitBullet.midX(), hitBullet.midY(), 0xffffffff);
+				return;
 			}
 		}
 	}

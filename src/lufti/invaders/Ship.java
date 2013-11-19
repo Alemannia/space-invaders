@@ -71,6 +71,6 @@ public class Ship extends GameObject {
 	}
 
 	public void kill() {
-		dead = true;
+		// dead = true;
 	}
 }
