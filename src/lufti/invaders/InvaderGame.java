@@ -1,14 +1,9 @@
 package lufti.invaders;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ListIterator;
 import lufti.game.AbstractGame;
 import lufti.game.PlayerInput;
-import lufti.game.PlayerInput.Command;
 import lufti.sprites.SpriteSheet;
 import lufti.sprites.SpriteSheetFactory;
 import lufti.ui.Canvas;
@@ -23,6 +18,8 @@ public class InvaderGame extends AbstractGame {
 	private SpriteSheet sprites;
 	private Ship ship;
 	private ArrayList<GameObject> gameObjects = new ArrayList<>();
+	private ArrayList<GameObject> newGameObjects = new ArrayList<>();
+	
 	private ParticleEmitter particleEmitter = new ParticleEmitter();
 
 	private int gameHeight, gameWidth;
@@ -30,9 +27,11 @@ public class InvaderGame extends AbstractGame {
 	public InvaderGame() throws IOException {
 		sprites = SpriteSheetFactory.getClassic();
 		ship = new Ship(402, 500, sprites);
+		
 		gameHeight = 600;
 		gameWidth = 800;
 
+		addGameObject(ship);
 		InvaderGroup.create(this, sprites);
 	}
 
@@ -66,8 +65,9 @@ public class InvaderGame extends AbstractGame {
 
 	@Override
 	public void update(PlayerInput input) {
-		ship.update(input, this);
-
+		gameObjects.addAll(newGameObjects);
+		newGameObjects.clear();
+		
 		particleEmitter.update(input, this);
 
 		for (GameObject object : gameObjects) {
@@ -83,8 +83,8 @@ public class InvaderGame extends AbstractGame {
 		gameObjects = keep;
 	}
 
-	void spawnExplosion(int x, int y) {
-		particleEmitter.setColor(0xffffffff).setVelocity(5f)
+	void spawnExplosion(int x, int y, int col) {
+		particleEmitter.setColor(col).setVelocity(5f)
 				.setGravity(.1f).setTTL(200)
 				.setBounce(.25f, .1f);
 		particleEmitter.createExplosion(x, y, 60, 25);
@@ -92,8 +92,6 @@ public class InvaderGame extends AbstractGame {
 
 	@Override
 	public void render(Canvas.CanvasPainter pntr) {
-		ship.render(pntr, sprites);
-		
 		for (GameObject object : gameObjects) {
 			object.render(pntr, sprites);
 		}
@@ -102,11 +100,11 @@ public class InvaderGame extends AbstractGame {
 	}
 
 	public void createBullet(int x, int y, int speed, String type) {
-		gameObjects.add(new Bullet(x, y, speed, type));
+		newGameObjects.add(new Bullet(x, y, speed, type));
 	}
 	
 	public void addGameObject(GameObject object) {
-		gameObjects.add(object);
+		newGameObjects.add(object);
 	}
 
 }

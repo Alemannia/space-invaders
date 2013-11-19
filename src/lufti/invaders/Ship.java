@@ -16,8 +16,10 @@ public class Ship extends GameObject {
 	private int shipSpeed = 8;
 	private int shipWidth = 52;
 
-	private int reloadTime = 20;
+	private int reloadTime = 4;
 	private int reloadCounter = 0;
+	
+	private boolean dead = false;
 
 	public Ship(int x, int y, SpriteSheet sprites) {
 		super(x, y);
@@ -27,8 +29,7 @@ public class Ship extends GameObject {
 	
 	@Override
 	public boolean isAlive() {
-		// TODO
-		return true;
+		return !dead;
 	}
 
 	@Override
@@ -52,17 +53,24 @@ public class Ship extends GameObject {
 
 		int projHeight = 16; // ;sprites.getSpriteDimension("ProjectileA", 0).height;
 		if (input.containsCommand(PlayerInput.Command.SHOOT) && reloadCounter <= 0) {
-			game.createBullet(x - 2, y - projHeight, bulletSpeed, "ProjectileA");
+			game.createBullet(midX()-2, getTopSide()+8, bulletSpeed, "ProjectileA");
 			reloadCounter = reloadTime;
 		}
 	}
 
 	@Override
 	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
+		if( dead ) {
+			return;
+		}
+		
 		BufferedImage shipSprite = sprites.getSprite("Ship", 0);
 		Dimension shipDim = sprites.getSpriteDimension("Ship", 0);
-		pntr.drawImage(shipSprite, x - shipSprite.getWidth() / 2,
-				y - shipSprite.getHeight() / 2);
+		pntr.drawImage(shipSprite, x, y);
 
+	}
+
+	public void kill() {
+		dead = true;
 	}
 }

@@ -15,6 +15,7 @@ public class Invader extends GameObject {
 	private int animCounter;
 	private final int ANIM_TICK = 10;
 	private int tickCounter = 0;
+	private double shootProb = 0.001;
 	private boolean dead = false;
 
 	public Invader(int x, int y, SpriteSheet sprites, String type) {
@@ -30,6 +31,10 @@ public class Invader extends GameObject {
 		if (tickCounter > ANIM_TICK) {
 			tickCounter = 0;
 			animCounter++;
+		}
+		
+		if(Math.random() < shootProb) {
+			game.createBullet(midX(), getBottomSide(), 4, "ProjectileB");
 		}
 	}
 	

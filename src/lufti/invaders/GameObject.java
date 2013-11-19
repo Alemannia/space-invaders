@@ -50,6 +50,14 @@ public abstract class GameObject {
 		return x+w;
 	}
 	
+	public int getTopSide() {
+		return y;
+	}
+	
+	public int getBottomSide() {
+		return y+h;
+	}
+	
 	public boolean contains(int px, int py) {
 		if (px < x || px >= x + w || py < y || py >= y + h) {
 			return false;

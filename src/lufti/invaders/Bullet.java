@@ -41,17 +41,32 @@ public class Bullet extends GameObject {
 
 		ArrayList<GameObject> collisions = game.findCollisions(x, y);
 
-		Invader hitInvader = null;
-		for (GameObject object : collisions) {
-			if (object instanceof Invader) {
-				hitInvader = (Invader) object;
+		if (speed > 0) {
+			Ship hitShip = null;
+			for (GameObject object : collisions) {
+				if (object instanceof Ship) {
+					hitShip = (Ship) object;
+				}
 			}
-		}
+			
+			if(hitShip != null) {
+				hitShip.kill();
+				kill();
+				game.spawnExplosion(hitShip.midX(), hitShip.midY(), 0xff00ff00);
+			}
+		} else {
+			Invader hitInvader = null;
+			for (GameObject object : collisions) {
+				if (object instanceof Invader) {
+					hitInvader = (Invader) object;
+				}
+			}
 
-		if (hitInvader != null) {
-			hitInvader.kill();
-			kill();
-			game.spawnExplosion(hitInvader.midX(), hitInvader.midY());
+			if (hitInvader != null) {
+				hitInvader.kill();
+				kill();
+				game.spawnExplosion(hitInvader.midX(), hitInvader.midY(), 0xffffffff);
+			}
 		}
 	}
 
