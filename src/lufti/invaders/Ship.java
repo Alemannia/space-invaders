@@ -16,7 +16,7 @@ public class Ship extends GameObject {
 	private int shipSpeed = 8;
 	private int shipWidth = 52;
 
-	private int reloadTime = 4;
+	private int reloadTime = 20;
 	private int reloadCounter = 0;
 
 	public Ship(int x, int y, SpriteSheet sprites) {
@@ -52,7 +52,7 @@ public class Ship extends GameObject {
 
 		int projHeight = 16; // ;sprites.getSpriteDimension("ProjectileA", 0).height;
 		if (input.containsCommand(PlayerInput.Command.SHOOT) && reloadCounter <= 0) {
-			game.createBullet(x - 2, y - projHeight, bulletSpeed);
+			game.createBullet(x - 2, y - projHeight, bulletSpeed, "ProjectileA");
 			reloadCounter = reloadTime;
 		}
 	}

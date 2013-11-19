@@ -22,8 +22,7 @@ public class InvaderGame extends AbstractGame {
 
 	private SpriteSheet sprites;
 	private Ship ship;
-	private ArrayList<Bullet> bullets = new ArrayList<>();
-	private ArrayList<Invader> invaders = new ArrayList<>();
+	private ArrayList<GameObject> gameObjects = new ArrayList<>();
 	private ParticleEmitter particleEmitter = new ParticleEmitter();
 
 	private int gameHeight, gameWidth;
@@ -34,20 +33,7 @@ public class InvaderGame extends AbstractGame {
 		gameHeight = 600;
 		gameWidth = 800;
 
-		// Create invaders
-		int rows = 5;
-		int cols = 11;
-		int offX = 110, offY = 50;
-		int dx = 14 * 4;
-		int dy = 14 * 4;
-		String[] types = new String[]{"InvaderC", "InvaderA", "InvaderA", "InvaderB", "InvaderB"};
-		int[] offsets = new int[]{8, 4, 4, 0, 0};
-		for (int x = 0; x < cols; x++) {
-			for (int y = 0; y < rows; y++) {
-				String type = types[y];
-				invaders.add(new Invader(offX + x * dx + offsets[y], offY + y * dy, sprites, type));
-			}
-		}
+		InvaderGroup.create(this, sprites);
 	}
 
 	public int getRightGameBorder() {
@@ -65,6 +51,18 @@ public class InvaderGame extends AbstractGame {
 	public int getBottomGameBorder() {
 		return gameHeight;
 	}
+	
+	public ArrayList<GameObject> findCollisions(int x, int y) {
+		ArrayList<GameObject> res = new ArrayList<>();
+		
+		for (GameObject object : gameObjects) {
+			if( object.contains(x, y)) {
+				res.add(object);
+			}
+		}
+		
+		return res;
+	}
 
 	@Override
 	public void update(PlayerInput input) {
@@ -72,42 +70,20 @@ public class InvaderGame extends AbstractGame {
 
 		particleEmitter.update(input, this);
 
-		for (Invader invader : invaders) {
-			invader.update(input, this);
+		for (GameObject object : gameObjects) {
+			object.update(input, this);
 		}
 
-		ArrayList<Bullet> keep = new ArrayList<>();
-		for (Bullet bullet : bullets) {
-			bullet.update(input, this);
-			
-			Invader hitInvader = null;
-			for (Invader invader : invaders) {
-				if (invader.contains(bullet.x, bullet.y)) {
-					hitInvader = invader;
-					break;
-				}
-			}
-
-			if (hitInvader != null) {
-				hitInvader.kill();
-				spawnExplosion(hitInvader.midX(), hitInvader.midY());
-				continue;
-			}
-
-			keep.add(bullet);
-		}
-		bullets = keep;
-		
-		ArrayList<Invader> aliveInvaders = new ArrayList<>();
-		for (Invader invader : invaders) {
-			if(invader.isAlive()) {
-				aliveInvaders.add(invader);
+		ArrayList<GameObject> keep = new ArrayList<>();
+		for (GameObject object : gameObjects) {
+			if (object.isAlive()) {
+				keep.add(object);
 			}
 		}
-		invaders = aliveInvaders;
+		gameObjects = keep;
 	}
 
-	private void spawnExplosion(int x, int y) {
+	void spawnExplosion(int x, int y) {
 		particleEmitter.setColor(0xffffffff).setVelocity(5f)
 				.setGravity(.1f).setTTL(200)
 				.setBounce(.25f, .1f);
@@ -117,20 +93,20 @@ public class InvaderGame extends AbstractGame {
 	@Override
 	public void render(Canvas.CanvasPainter pntr) {
 		ship.render(pntr, sprites);
-
-		for (Bullet bullet : bullets) {
-			bullet.render(pntr, sprites);
-		}
-
-		for (Invader invader : invaders) {
-			invader.render(pntr, sprites);
+		
+		for (GameObject object : gameObjects) {
+			object.render(pntr, sprites);
 		}
 
 		particleEmitter.render(pntr, sprites);
 	}
 
-	public void createBullet(int x, int y, int speed) {
-		bullets.add(new Bullet(x, y, speed));
+	public void createBullet(int x, int y, int speed, String type) {
+		gameObjects.add(new Bullet(x, y, speed, type));
+	}
+	
+	public void addGameObject(GameObject object) {
+		gameObjects.add(object);
 	}
 
 }
