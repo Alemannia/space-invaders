@@ -78,11 +78,8 @@ public class InvaderGame extends AbstractGame {
 
 		ArrayList<Bullet> keep = new ArrayList<>();
 		for (Bullet bullet : bullets) {
-			bullet.y -= 8;
-			if (bullet.y < getTopGameBorder() - 50) {
-				continue;
-			}
-
+			bullet.update(input, this);
+			
 			Invader hitInvader = null;
 			for (Invader invader : invaders) {
 				if (invader.contains(bullet.x, bullet.y)) {
@@ -103,7 +100,7 @@ public class InvaderGame extends AbstractGame {
 		
 		ArrayList<Invader> aliveInvaders = new ArrayList<>();
 		for (Invader invader : invaders) {
-			if(!invader.isDead()) {
+			if(invader.isAlive()) {
 				aliveInvaders.add(invader);
 			}
 		}
@@ -132,8 +129,8 @@ public class InvaderGame extends AbstractGame {
 		particleEmitter.render(pntr, sprites);
 	}
 
-	public void createBullet(int x, int y) {
-		bullets.add(new Bullet(x, y));
+	public void createBullet(int x, int y, int speed) {
+		bullets.add(new Bullet(x, y, speed));
 	}
 
 }

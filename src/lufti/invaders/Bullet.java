@@ -11,8 +11,12 @@ import lufti.ui.Canvas;
  */
 public class Bullet extends GameObject {
 
-	public Bullet(int x, int y) {
+	private int speed;
+	private boolean dead = false;
+
+	public Bullet(int x, int y, int speed) {
 		super(x, y);
+		this.speed = speed;
 	}
 
 	@Override
@@ -23,6 +27,15 @@ public class Bullet extends GameObject {
 
 	@Override
 	public void update(PlayerInput input, InvaderGame game) {
-		// TODO!!
+		y += speed;
+		if (y < game.getTopGameBorder() - 50 || y > game.getBottomGameBorder() + 50) {
+			dead = true;
+		}
+
+	}
+
+	@Override
+	public boolean isAlive() {
+		return !dead;
 	}
 }

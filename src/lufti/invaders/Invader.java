@@ -33,8 +33,9 @@ public class Invader extends GameObject {
 		}
 	}
 	
-	public boolean isDead() {
-		return dead;
+	@Override
+	public boolean isAlive() {
+		return !dead;
 	}
 
 	@Override

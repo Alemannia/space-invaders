@@ -12,6 +12,7 @@ import lufti.ui.Canvas;
  */
 public class Ship extends GameObject {
 
+	private int bulletSpeed = -8;
 	private int shipSpeed = 8;
 	private int shipWidth = 52;
 
@@ -22,6 +23,12 @@ public class Ship extends GameObject {
 		super(x, y);
 		w = sprites.getSpriteDimension("Ship", 0).width;
 		h = sprites.getSpriteDimension("Ship", 0).height;
+	}
+	
+	@Override
+	public boolean isAlive() {
+		// TODO
+		return true;
 	}
 
 	@Override
@@ -45,7 +52,7 @@ public class Ship extends GameObject {
 
 		int projHeight = 16; // ;sprites.getSpriteDimension("ProjectileA", 0).height;
 		if (input.containsCommand(PlayerInput.Command.SHOOT) && reloadCounter <= 0) {
-			game.createBullet(x - 2, y - projHeight);
+			game.createBullet(x - 2, y - projHeight, bulletSpeed);
 			reloadCounter = reloadTime;
 		}
 	}

@@ -153,8 +153,12 @@ public class ParticleEmitter extends GameObject {
 		}
 	}
 
-	private class Particle {
+	@Override
+	public boolean isAlive() {
+		return true;
+	}
 
+	private class Particle {
 		int ttl;
 		int rgb;
 		float oldX, oldY;

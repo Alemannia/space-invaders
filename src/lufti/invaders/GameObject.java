@@ -48,6 +48,8 @@ public abstract class GameObject {
 		}
 		return true;
 	}
+	
+	public abstract boolean isAlive();
 
 	public abstract void update(PlayerInput input, InvaderGame game);
 
