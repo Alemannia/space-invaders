@@ -29,7 +29,6 @@ public class InvaderGroup extends GameObject {
 				String type = Config.INVADER_ROWS[y];
 				Invader inv = new Invader(Config.INVADER_START_X + x*(Config.INVADER_SPACING_HOR+Config.MAX_INVADER_WIDTH),
 									Config.INVADER_START_Y + y*(Config.INVADER_SPACING_VERT+Config.MAX_INVADER_HEIGHT), sprites, type);
-				System.out.println(inv);
 				game.addGameObject(inv);
 				res.invaders.add(inv);
 			}
