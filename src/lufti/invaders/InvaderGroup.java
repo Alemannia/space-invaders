@@ -24,17 +24,12 @@ public class InvaderGroup extends GameObject {
 		InvaderGroup res = new InvaderGroup();
 		
 		// Create invaders
-		int rows = 5;
-		int cols = 11;
-		int offX = 110, offY = 50;
-		int dx = 14 * 4;
-		int dy = 14 * 4;
-		String[] types = new String[]{"InvaderC", "InvaderA", "InvaderA", "InvaderB", "InvaderB"};
-		int[] offsets = new int[]{8, 4, 4, 0, 0};
-		for (int x = 0; x < cols; x++) {
-			for (int y = 0; y < rows; y++) {
-				String type = types[y];
-				Invader inv = new Invader(offX + x * dx + offsets[y], offY + y * dy, sprites, type);
+		for (int x = 0; x < Config.INVADER_COLS; x++) {
+			for (int y = 0; y < Config.INVADER_ROWS.length; y++) {
+				String type = Config.INVADER_ROWS[y];
+				Invader inv = new Invader(Config.INVADER_START_X + x*(Config.INVADER_SPACING_HOR+Config.MAX_INVADER_WIDTH),
+									Config.INVADER_START_Y + y*(Config.INVADER_SPACING_VERT+Config.MAX_INVADER_HEIGHT), sprites, type);
+				System.out.println(inv);
 				game.addGameObject(inv);
 				res.invaders.add(inv);
 			}

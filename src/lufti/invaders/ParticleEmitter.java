@@ -101,7 +101,7 @@ public class ParticleEmitter extends GameObject {
 		int left = game.getLeftGameBorder();
 		int right = game.getRightGameBorder();
 		int top = game.getTopGameBorder();
-		int bottom = game.getBottomGameBorder();
+		int bottom = game.getFloor();
 
 		for (Particle p : particles) {
 			p.oldX = p.x;

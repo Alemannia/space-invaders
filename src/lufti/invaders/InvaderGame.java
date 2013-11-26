@@ -22,33 +22,32 @@ public class InvaderGame extends AbstractGame {
 
 	private ParticleEmitter particleEmitter = new ParticleEmitter();
 
-	private int gameHeight, gameWidth;
-
 	public InvaderGame() throws IOException {
 		sprites = SpriteSheetFactory.getClassic();
-		ship = new Ship(402, 500, sprites);
-
-		gameHeight = 600;
-		gameWidth = 800;
+		ship = new Ship(Config.PLAYER_START_X, Config.PLAYER_START_Y, sprites);
 
 		addGameObject(ship);
 		InvaderGroup.create(this, sprites);
 	}
 
 	public int getRightGameBorder() {
-		return gameWidth - 40;
+		return Config.GAME_RIGHT;
 	}
 
 	public int getLeftGameBorder() {
-		return 40;
+		return Config.GAME_LEFT;
 	}
 
 	public int getTopGameBorder() {
-		return 0;
+		return Config.GAME_TOP;
 	}
 
 	public int getBottomGameBorder() {
-		return gameHeight;
+		return Config.GAME_BOTTOM;
+	}
+	
+	public int getFloor() {
+		return Config.FLOOR;
 	}
 
 	public ArrayList<GameObject> findCollisions(int x, int y) {
@@ -85,9 +84,9 @@ public class InvaderGame extends AbstractGame {
 
 	void spawnExplosion(int x, int y, int col) {
 		particleEmitter.setColor(col).setVelocity(5f)
-				.setGravity(.1f).setTTL(200)
+				.setGravity(.1f).setTTL(160)
 				.setBounce(.25f, .1f);
-		particleEmitter.createExplosion(x, y, 60, 25);
+		particleEmitter.createExplosion(x, y, 40, 25);
 	}
 
 	void spawnSmallExplosion(int x, int y, int col) {
@@ -104,6 +103,9 @@ public class InvaderGame extends AbstractGame {
 		}
 
 		particleEmitter.render(pntr, sprites);
+		
+		// Draw Floor
+		pntr.drawLine(getLeftGameBorder(), getFloor(), getRightGameBorder(), getFloor(), 4, 0xffffffff);
 	}
 
 	public void createBullet(int x, int y, int speed, String type) {

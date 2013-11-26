@@ -25,6 +25,7 @@ public class Ship extends GameObject {
 		super(x, y);
 		w = sprites.getSpriteDimension("Ship", 0).width;
 		h = sprites.getSpriteDimension("Ship", 0).height;
+		this.y -= h; // Initial coords are for the bottom of the ship
 	}
 	
 	@Override
