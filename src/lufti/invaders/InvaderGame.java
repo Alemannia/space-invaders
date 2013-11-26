@@ -109,7 +109,7 @@ public class InvaderGame extends AbstractGame {
 	}
 
 	public void createBullet(int x, int y, int speed, String type) {
-		newGameObjects.add(new Bullet(x, y, speed, type));
+		newGameObjects.add(new Bullet(x, y, speed, sprites, type));
 	}
 
 	public void addGameObject(GameObject object) {

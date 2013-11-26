@@ -13,7 +13,7 @@ import lufti.ui.Canvas;
 public class Ship extends GameObject {
 
 	private int bulletSpeed = -8;
-	private int shipSpeed = 8;
+	private int shipSpeed = 4;
 	private int shipWidth = 52;
 
 	private int reloadTime = 4;

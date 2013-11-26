@@ -16,14 +16,11 @@ public class Bullet extends GameObject {
 	private String type;
 	private boolean dead = false;
 
-	public Bullet(int x, int y, int speed, String type) {
-		super(x, y, 4, 8);
-		
-		// TODO: don't cheat.
-		if(speed > 0) {
-			w = 12;
-		}
-		
+	public Bullet(int x, int y, int speed, SpriteSheet sprites, String type) {
+		super(x, y);
+		w = sprites.getSpriteDimension(type, 0).width;
+		h = sprites.getSpriteDimension(type, 0).height;
+
 		this.speed = speed;
 		this.type = type;
 	}
@@ -54,8 +51,8 @@ public class Bullet extends GameObject {
 					hitShip = (Ship) object;
 				}
 			}
-			
-			if(hitShip != null) {
+
+			if (hitShip != null) {
 				hitShip.kill();
 				kill();
 				game.spawnExplosion(hitShip.midX(), hitShip.midY(), 0xff00ff00);
@@ -74,14 +71,14 @@ public class Bullet extends GameObject {
 				game.spawnExplosion(hitInvader.midX(), hitInvader.midY(), 0xffffffff);
 				return;
 			}
-			
+
 			Bullet hitBullet = null;
 			for (GameObject object : collisions) {
-				if(object instanceof Bullet && object != this) {
+				if (object instanceof Bullet && object != this) {
 					hitBullet = (Bullet) object;
 				}
 			}
-			
+
 			if (hitBullet != null) {
 				hitBullet.kill();
 				kill();
