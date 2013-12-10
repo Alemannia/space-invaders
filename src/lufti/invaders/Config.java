@@ -34,9 +34,9 @@ public class Config {
 	public static final int PLAYER_START_Y = GAME_BOTTOM - 4*24; 
 	
 	public static final int NUM_BUNKERS = 4; 
-	public static final int BUNKER_START_X = 4*32; 
+	public static final int BUNKER_START_X = GAME_LEFT + 4*32; 
 	public static final int BUNKER_START_Y = GAME_BOTTOM - 4*40; 
-	public static final int BUNKER_SPACING = 4*23; 
+	public static final int BUNKER_SPACING = 4*45; 
 	public static final int FLOOR = GAME_BOTTOM - 4*17; 
 	
 	public static final int ANIMATION_TICK = 10; // Number of updates after which animation is advanced by one frame

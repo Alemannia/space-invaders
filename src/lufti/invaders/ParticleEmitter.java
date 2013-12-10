@@ -20,7 +20,7 @@ public class ParticleEmitter extends GameObject {
 	private int ttl = 120;
 
 	private Random random = new Random();
-	private ArrayList<Particle> particles = new ArrayList<>();
+	private ArrayList<Particle> particles = new ArrayList<Particle>();
 
 	public ParticleEmitter() {
 		super(0, 0);
@@ -131,7 +131,7 @@ public class ParticleEmitter extends GameObject {
 			p.ttl--;
 		}
 
-		ArrayList<Particle> remaining = new ArrayList<>();
+		ArrayList<Particle> remaining = new ArrayList<Particle>();
 		for (Particle p : particles) {
 			if (p.ttl <= 0) { // || p.x < left || p.x > right || p.y < top || p.y > bottom) {
 				continue;

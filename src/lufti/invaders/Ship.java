@@ -11,7 +11,6 @@ public class Ship extends SpriteObject {
 
 	private final int bulletSpeed = -8;
 	private final int shipSpeed = 4;
-	private final int shipWidth = 52;
 
 	private final int reloadTime = 4;
 	private int reloadCounter = 0;
@@ -52,13 +51,23 @@ public class Ship extends SpriteObject {
 
 		int projHeight = 16; // ;sprites.getSpriteDimension("ProjectileA", 0).height;
 		if (input.containsCommand(PlayerInput.Command.SHOOT) && reloadCounter <= 0) {
-			game.createBullet(midX()-2, getTopSide()+8, bulletSpeed, "ProjectileA");
+			game.createBullet(midX()-2, getTopSide()+8, bulletSpeed, "ProjectileA", false);
 			reloadCounter = reloadTime;
 		}
 	}
 
-
 	public void kill() {
 		// dead = true;
+	}
+
+	@Override
+	public boolean handleHit(InvaderGame game, Bullet bullet) {
+		if( !bullet.isInvaderBullet() ) {
+			return false; // Not a collision
+		}
+		
+		game.spawnExplosion(midX(), midY(), 0xff00ff00);
+		kill();
+		return true;
 	}
 }
