@@ -61,6 +61,7 @@ public class InvaderGame extends AbstractGame {
 
 		return res;
 	}
+	
 
 	@Override
 	public void update(PlayerInput input) {

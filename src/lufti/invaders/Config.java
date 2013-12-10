@@ -38,4 +38,6 @@ public class Config {
 	public static final int BUNKER_START_Y = GAME_BOTTOM - 4*40; 
 	public static final int BUNKER_SPACING = 4*23; 
 	public static final int FLOOR = GAME_BOTTOM - 4*17; 
+	
+	public static final int ANIMATION_TICK = 10; // Number of updates after which animation is advanced by one frame
 }

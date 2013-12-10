@@ -15,6 +15,7 @@ public class Invader extends GameObject {
 	private int animCounter;
 	private final int ANIM_TICK = 10;
 	private int tickCounter = 0;
+	
 	private double shootProb = 0.001;
 	private boolean dead = false;
 	private boolean canShoot = true;

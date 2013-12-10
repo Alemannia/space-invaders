@@ -10,21 +10,20 @@ import lufti.ui.Canvas;
  *
  * @author ubik
  */
-public class Ship extends GameObject {
+public class Ship extends SpriteObject {
 
-	private int bulletSpeed = -8;
-	private int shipSpeed = 4;
-	private int shipWidth = 52;
+	private final int bulletSpeed = -8;
+	private final int shipSpeed = 4;
+	private final int shipWidth = 52;
 
-	private int reloadTime = 4;
+	private final int reloadTime = 4;
 	private int reloadCounter = 0;
+	
 	
 	private boolean dead = false;
 
 	public Ship(int x, int y, SpriteSheet sprites) {
-		super(x, y);
-		w = sprites.getSpriteDimension("Ship", 0).width;
-		h = sprites.getSpriteDimension("Ship", 0).height;
+		super(x, y, sprites, "Ship");
 		this.y -= h; // Initial coords are for the bottom of the ship
 	}
 	
@@ -41,14 +40,14 @@ public class Ship extends GameObject {
 
 		if (input.containsCommand(PlayerInput.Command.RIGHT)) {
 			x += shipSpeed;
-			if (x > game.getRightGameBorder() - shipWidth / 2) {
-				x = game.getRightGameBorder() - shipWidth / 2;
+			if (x > game.getRightGameBorder() - w) {
+				x = game.getRightGameBorder() - w;
 			}
 		}
 		if (input.containsCommand(PlayerInput.Command.LEFT)) {
 			x -= shipSpeed;
-			if (x < game.getLeftGameBorder() + shipWidth / 2) {
-				x = game.getLeftGameBorder() + shipWidth / 2;
+			if (x < game.getLeftGameBorder()) {
+				x = game.getLeftGameBorder();
 			}
 		}
 
