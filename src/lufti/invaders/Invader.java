@@ -47,7 +47,7 @@ public class Invader extends SpriteObject {
 			return false;
 		}
 		
-		game.spawnExplosion(bullet.midX(), bullet.midY(), 0xffffffff);
+		game.spawnExplosion(this);
 		kill();
 		return true;
 	}

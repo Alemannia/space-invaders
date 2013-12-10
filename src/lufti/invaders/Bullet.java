@@ -108,7 +108,11 @@ public class Bullet extends SpriteObject {
 	public boolean handleHit(InvaderGame game, Bullet other) {
 		if( isInvaderBullet() != other.isInvaderBullet() ) {
 			kill();
-			game.spawnExplosion(other.midX(), other.midY(), 0xffffffff);
+			if( isInvaderBullet() ) {
+				game.spawnExplosion(this);
+			} else {
+				game.spawnExplosion(other);
+			}
 			return true;
 		} else {
 			return false; // No collision

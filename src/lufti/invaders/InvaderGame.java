@@ -1,7 +1,9 @@
 package lufti.invaders;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import lufti.game.AbstractGame;
 import lufti.game.PlayerInput;
 import lufti.sprites.SpriteSheet;
@@ -24,7 +26,7 @@ public class InvaderGame extends AbstractGame {
 
 	public InvaderGame() throws IOException {
 		sprites = SpriteSheetFactory.getClassic();
-		
+
 		// Create and position game objects
 		ship = new Ship(Config.PLAYER_START_X, Config.PLAYER_START_Y, sprites);
 		addGameObject(ship);
@@ -32,7 +34,7 @@ public class InvaderGame extends AbstractGame {
 		InvaderGroup.create(this, sprites);
 
 		for (int i = 0; i < Config.NUM_BUNKERS; i++) {
-			int x = Config.BUNKER_START_X + i*Config.BUNKER_SPACING;
+			int x = Config.BUNKER_START_X + i * Config.BUNKER_SPACING;
 			int y = Config.BUNKER_START_Y;
 			addGameObject(new Bunker(x, y, sprites));
 		}
@@ -53,7 +55,7 @@ public class InvaderGame extends AbstractGame {
 	public int getBottomGameBorder() {
 		return Config.GAME_BOTTOM;
 	}
-	
+
 	public int getFloor() {
 		return Config.FLOOR;
 	}
@@ -69,20 +71,20 @@ public class InvaderGame extends AbstractGame {
 
 		return res;
 	}
-	
+
 	public ArrayList<SpriteObject> findCollisions(SpriteObject source) {
 		ArrayList<SpriteObject> res = new ArrayList<SpriteObject>();
-		
+
 		for (GameObject gameObject : gameObjects) {
-			if( gameObject instanceof SpriteObject) {
+			if (gameObject instanceof SpriteObject) {
 				SpriteObject target = (SpriteObject) gameObject;
-				if(Collision.pixelPerfect(source.getSprite(),source.x,source.y,
-										  target.getSprite(),target.x,target.y)) {
+				if (Collision.pixelPerfect(source.getSprite(), source.x, source.y,
+						target.getSprite(), target.x, target.y)) {
 					res.add(target);
 				}
 			}
 		}
-		
+
 		return res;
 	}
 
@@ -120,6 +122,39 @@ public class InvaderGame extends AbstractGame {
 		particleEmitter.createExplosion(x, y, 10, 10);
 	}
 
+	void spawnExplosion(SpriteObject object) {
+		BufferedImage sprite = object.getSprite();
+		int w = sprite.getWidth();
+		int h = sprite.getHeight();
+		int mx = w/2;
+		int my = h/2;
+		
+		float force = 0.01f;
+		float r = 0.1f; // Randomized force
+		float xbias = 1.5f;
+		
+		particleEmitter.setVelocity(5f)
+				.setGravity(.1f).setTTL(200)
+				.setBounce(.25f, .1f);
+
+		Random rnd = new Random();
+		
+		// Scan in 4-increments
+		for (int x = 0; x < w; x += 4) {
+			for (int y = 0; y < h; y +=4) {
+				int col = sprite.getRGB(x, y);
+				if (((col >> 24) & 0xff) != 0) {
+					particleEmitter.setColor(col);
+
+					float dx = ((x - mx)*force + (rnd.nextFloat()-.5f)*r)*xbias;
+					float dy = (y - my)*force + (rnd.nextFloat()-.5f)*r;
+					
+					particleEmitter.createParticle(object.x+x, object.y+y, dx, dy);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void render(Canvas.CanvasPainter pntr) {
 		for (GameObject object : gameObjects) {
@@ -127,7 +162,7 @@ public class InvaderGame extends AbstractGame {
 		}
 
 		particleEmitter.render(pntr, sprites);
-		
+
 		// Draw Floor
 		pntr.drawLine(getLeftGameBorder(), getFloor(), getRightGameBorder(), getFloor(), 4, 0xffffffff);
 	}

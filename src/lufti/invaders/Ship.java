@@ -12,7 +12,7 @@ public class Ship extends SpriteObject {
 	private final int bulletSpeed = -8;
 	private final int shipSpeed = 4;
 
-	private final int reloadTime = 4;
+	private final int reloadTime = 10;
 	private int reloadCounter = 0;
 	
 	

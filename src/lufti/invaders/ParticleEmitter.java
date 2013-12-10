@@ -77,6 +77,12 @@ public class ParticleEmitter extends GameObject {
 			p.oldY = p.y;
 		}
 	}
+	
+	public void createParticle(int x, int y, float dx, float dy) {
+		Particle p = createParticle(dx, dy);
+		p.x = p.oldX = x;
+		p.y = p.oldY = y;
+	}
 
 	private Particle createParticle(float dx, float dy) {
 		float v = vel + random.nextFloat() * velVar;
