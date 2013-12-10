@@ -24,7 +24,7 @@ public class Invader extends SpriteObject {
 		animate();
 		
 		if(canShoot && Math.random() < shootProb) {
-			game.createBullet(midX(), getBottomSide()-16, 4, "ProjectileB");
+			game.createBullet(midX(), getBottomSide()-16, 4, "ProjectileB", true);
 		}
 	}
 	
@@ -39,5 +39,16 @@ public class Invader extends SpriteObject {
 	
 	public void kill() {
 		dead = true;
+	}
+
+	@Override
+	public boolean handleHit(InvaderGame game, Bullet bullet) {
+		if( bullet.isInvaderBullet() ) {
+			return false;
+		}
+		
+		game.spawnExplosion(bullet.midX(), bullet.midY(), 0xffffffff);
+		kill();
+		return true;
 	}
 }

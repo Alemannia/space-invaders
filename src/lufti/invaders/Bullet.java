@@ -14,10 +14,12 @@ public class Bullet extends SpriteObject {
 
 	private int speed;
 	private boolean dead = false;
+	private final boolean invaderBullet; // Denotes that this was fired by an invader
 
-	public Bullet(int x, int y, int speed, SpriteSheet sprites, String type) {
+	public Bullet(int x, int y, int speed, SpriteSheet sprites, String type, boolean invaderBullet) {
 		super(x, y, sprites, type);
 		this.speed = speed;
+		this.invaderBullet = invaderBullet;
 	}
 
 	@Override
@@ -35,11 +37,19 @@ public class Bullet extends SpriteObject {
 		}
 
 		// Find collisions
-		ArrayList<GameObject> collisions = game.findCollisions(x, y);
+		ArrayList<SpriteObject> collisions = game.findCollisions(this);
+		
+		for (SpriteObject spriteObject : collisions) {
+			if( spriteObject.handleHit(game, this) ){
+				kill();
+				break;
+			}
+		}
 
+		/*
 		if (speed > 0) {
 			Ship hitShip = null;
-			for (GameObject object : collisions) {
+			for (SpriteObject object : collisions) {
 				if (object instanceof Ship) {
 					hitShip = (Ship) object;
 				}
@@ -52,7 +62,7 @@ public class Bullet extends SpriteObject {
 			}
 		} else {
 			Invader hitInvader = null;
-			for (GameObject object : collisions) {
+			for (SpriteObject object : collisions) {
 				if (object instanceof Invader) {
 					hitInvader = (Invader) object;
 				}
@@ -66,7 +76,7 @@ public class Bullet extends SpriteObject {
 			}
 
 			Bullet hitBullet = null;
-			for (GameObject object : collisions) {
+			for (SpriteObject object : collisions) {
 				if (object instanceof Bullet && object != this) {
 					hitBullet = (Bullet) object;
 				}
@@ -78,7 +88,11 @@ public class Bullet extends SpriteObject {
 				game.spawnExplosion(hitBullet.midX(), hitBullet.midY(), 0xffffffff);
 				return;
 			}
-		}
+		}*/
+	}
+	
+	public boolean isInvaderBullet() {
+		return invaderBullet;
 	}
 
 	public void kill() {
@@ -88,5 +102,16 @@ public class Bullet extends SpriteObject {
 	@Override
 	public boolean isAlive() {
 		return !dead;
+	}
+
+	@Override
+	public boolean handleHit(InvaderGame game, Bullet other) {
+		if( isInvaderBullet() != other.isInvaderBullet() ) {
+			kill();
+			game.spawnExplosion(other.midX(), other.midY(), 0xffffffff);
+			return true;
+		} else {
+			return false; // No collision
+		}
 	}
 }

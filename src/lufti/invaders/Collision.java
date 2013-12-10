@@ -32,13 +32,11 @@ public class Collision {
 			for (int y = inter.y; y < inter.y + inter.height; y++) {
 				int pixelA = sprA.getRGB(x - ax, y - ay);
 				if (((pixelA >> 24) & 0xff) == 0) {
-					System.out.println("Sprite A is transparent at " + x + ", " + y);
 					continue;
 				}
 
 				int pixelB = sprB.getRGB(x - bx, y - by);
 				if (((pixelB >> 24) & 0xff) == 0) {
-					System.out.println("Sprite B is transparent at " + x + ", " + y);
 					continue;
 				}
 
