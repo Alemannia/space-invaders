@@ -17,6 +17,7 @@ public class Invader extends GameObject {
 	private int tickCounter = 0;
 	private double shootProb = 0.001;
 	private boolean dead = false;
+	private boolean canShoot = true;
 
 	public Invader(int x, int y, SpriteSheet sprites, String type) {
 		super(x, y);
@@ -33,8 +34,8 @@ public class Invader extends GameObject {
 			animCounter++;
 		}
 		
-		if(Math.random() < shootProb) {
-			game.createBullet(midX(), getBottomSide(), 4, "ProjectileB");
+		if(canShoot && Math.random() < shootProb) {
+			game.createBullet(midX(), getBottomSide()-16, 4, "ProjectileB");
 		}
 	}
 	
@@ -42,7 +43,7 @@ public class Invader extends GameObject {
 	public boolean isAlive() {
 		return !dead;
 	}
-
+	
 	@Override
 	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
 		animCounter = animCounter % sprites.getAnimationLength(type);
@@ -51,6 +52,10 @@ public class Invader extends GameObject {
 		pntr.drawImage(spr, x, y);
 	}
 
+	public void setCanShoot(boolean canShoot) {
+		this.canShoot = canShoot;
+	}
+	
 	public void kill() {
 		dead = true;
 	}

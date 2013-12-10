@@ -8,7 +8,9 @@ import lufti.ui.Canvas;
  * @author ubik
  */
 public abstract class GameObject {
-
+	private static int CURRENT_ID = 0;
+	protected final int id = CURRENT_ID++;
+	
 	protected int x, y;
 	protected int w, h;
 
