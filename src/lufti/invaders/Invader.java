@@ -11,7 +11,7 @@ import lufti.ui.Canvas;
  */
 public class Invader extends SpriteObject {
 
-	private double shootProb = 0.001;
+	private double shootProb = 0.005;
 	private boolean dead = false;
 	private boolean canShoot = true;
 
