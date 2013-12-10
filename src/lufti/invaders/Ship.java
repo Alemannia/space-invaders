@@ -1,10 +1,7 @@
 package lufti.invaders;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import lufti.game.PlayerInput;
 import lufti.sprites.SpriteSheet;
-import lufti.ui.Canvas;
 
 /**
  *
@@ -34,6 +31,8 @@ public class Ship extends SpriteObject {
 
 	@Override
 	public void update(PlayerInput input, InvaderGame game) {
+		animate();
+		
 		if (reloadCounter > 0) {
 			reloadCounter--;
 		}
@@ -58,17 +57,6 @@ public class Ship extends SpriteObject {
 		}
 	}
 
-	@Override
-	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
-		if( dead ) {
-			return;
-		}
-		
-		BufferedImage shipSprite = sprites.getSprite("Ship", 0);
-		Dimension shipDim = sprites.getSpriteDimension("Ship", 0);
-		pntr.drawImage(shipSprite, x, y);
-
-	}
 
 	public void kill() {
 		// dead = true;

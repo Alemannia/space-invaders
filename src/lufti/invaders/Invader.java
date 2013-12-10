@@ -9,31 +9,19 @@ import lufti.ui.Canvas;
  *
  * @author ubik
  */
-public class Invader extends GameObject {
+public class Invader extends SpriteObject {
 
-	private String type;
-	private int animCounter;
-	private final int ANIM_TICK = 10;
-	private int tickCounter = 0;
-	
 	private double shootProb = 0.001;
 	private boolean dead = false;
 	private boolean canShoot = true;
 
 	public Invader(int x, int y, SpriteSheet sprites, String type) {
-		super(x, y);
-		w = sprites.getSpriteDimension(type, 0).width;
-		h = sprites.getSpriteDimension(type, 0).height;
-		this.type = type;
+		super(x, y, sprites, type);
 	}
 
 	@Override
 	public void update(PlayerInput input, InvaderGame game) {
-		tickCounter++;
-		if (tickCounter > ANIM_TICK) {
-			tickCounter = 0;
-			animCounter++;
-		}
+		animate();
 		
 		if(canShoot && Math.random() < shootProb) {
 			game.createBullet(midX(), getBottomSide()-16, 4, "ProjectileB");
@@ -45,14 +33,6 @@ public class Invader extends GameObject {
 		return !dead;
 	}
 	
-	@Override
-	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
-		animCounter = animCounter % sprites.getAnimationLength(type);
-	
-		BufferedImage spr = sprites.getSprite(type, animCounter);
-		pntr.drawImage(spr, x, y);
-	}
-
 	public void setCanShoot(boolean canShoot) {
 		this.canShoot = canShoot;
 	}

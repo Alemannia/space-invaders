@@ -28,7 +28,7 @@ public abstract class SpriteObject extends GameObject {
 	@Override
 	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
 		if (isAlive()) {
-			BufferedImage sprite = sprites.getSprite(type, 0);
+			BufferedImage sprite = sprites.getSprite(type, animCounter);
 			pntr.drawImage(sprite, x, y);
 		}
 	}

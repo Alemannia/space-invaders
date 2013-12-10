@@ -10,29 +10,21 @@ import lufti.ui.Canvas;
  *
  * @author ubik
  */
-public class Bullet extends GameObject {
+public class Bullet extends SpriteObject {
 
 	private int speed;
-	private String type;
 	private boolean dead = false;
 
 	public Bullet(int x, int y, int speed, SpriteSheet sprites, String type) {
-		super(x, y);
-		w = sprites.getSpriteDimension(type, 0).width;
-		h = sprites.getSpriteDimension(type, 0).height;
-
+		super(x, y, sprites, type);
 		this.speed = speed;
-		this.type = type;
-	}
-
-	@Override
-	public void render(Canvas.CanvasPainter pntr, SpriteSheet sprites) {
-		BufferedImage proj = sprites.getSprite(type, 0);
-		pntr.drawImage(proj, x, y);
 	}
 
 	@Override
 	public void update(PlayerInput input, InvaderGame game) {
+		animate();
+		
+		// Move
 		y += speed;
 		if (y < game.getTopGameBorder() - 50 || y > game.getBottomGameBorder() + 50) {
 			dead = true;
@@ -42,6 +34,7 @@ public class Bullet extends GameObject {
 			return;
 		}
 
+		// Find collisions
 		ArrayList<GameObject> collisions = game.findCollisions(x, y);
 
 		if (speed > 0) {
