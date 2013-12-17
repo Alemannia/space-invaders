@@ -45,50 +45,6 @@ public class Bullet extends SpriteObject {
 				break;
 			}
 		}
-
-		/*
-		if (speed > 0) {
-			Ship hitShip = null;
-			for (SpriteObject object : collisions) {
-				if (object instanceof Ship) {
-					hitShip = (Ship) object;
-				}
-			}
-
-			if (hitShip != null) {
-				hitShip.kill();
-				kill();
-				game.spawnExplosion(hitShip.midX(), hitShip.midY(), 0xff00ff00);
-			}
-		} else {
-			Invader hitInvader = null;
-			for (SpriteObject object : collisions) {
-				if (object instanceof Invader) {
-					hitInvader = (Invader) object;
-				}
-			}
-
-			if (hitInvader != null) {
-				hitInvader.kill();
-				kill();
-				game.spawnExplosion(hitInvader.midX(), hitInvader.midY(), 0xffffffff);
-				return;
-			}
-
-			Bullet hitBullet = null;
-			for (SpriteObject object : collisions) {
-				if (object instanceof Bullet && object != this) {
-					hitBullet = (Bullet) object;
-				}
-			}
-
-			if (hitBullet != null) {
-				hitBullet.kill();
-				kill();
-				game.spawnExplosion(hitBullet.midX(), hitBullet.midY(), 0xffffffff);
-				return;
-			}
-		}*/
 	}
 	
 	public boolean isInvaderBullet() {
